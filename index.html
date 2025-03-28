@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>retro animal sim</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #FFFFFF; /* White background */
+            position: relative; /* For absolute positioning */
+        }
+        #lamb, #chicken, #goat, #cat, #pig, #cow, #horse {
+            cursor: pointer;
+            image-rendering: pixelated;
+        }
+        #chicken {
+            position: absolute;
+            top: 20px; /* Top left */
+            left: 20px;
+            display: none;
+        }
+        #goat {
+            position: absolute;
+            right: 200px; /* Right side of sheep */
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
+        #cat {
+            position: absolute;
+            bottom: 20px; /* Bottom left */
+            left: 10px; /* Cat at 10px */
+            display: none;
+        }
+        #pig {
+            position: absolute;
+            bottom: 20px; /* Right side of cat */
+            left: 500px; /* Pig at 500px */
+            display: none;
+        }
+        #cow {
+            position: absolute;
+            right: 200px; /* Aligned with goat */
+            top: 85%; /* More under goat */
+            transform: translateY(-50%) scale(2); /* Bigger cow (2x size) */
+            display: none;
+        }
+        #horse {
+            position: absolute;
+            right: 350px; /* Between sheep and goat */
+            top: 20px; /* Upper middle */
+            display: none;
+        }
+        #popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.pinimg.com/736x/2d/5f/6a/2d5f6afa338b441fce3c65cfd1554606.jpg') no-repeat center center;
+            background-size: cover;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* On top of everything */
+        }
+        #popup-text {
+            font-family: 'Press Start 2P', cursive; /* Pixel-style font */
+            font-size: 36px;
+            color: white;
+            text-align: center;
+            text-shadow: 2px 2px 4px black; /* Retro shadow for readability */
+        }
+    </style>
+    <!-- Load pixel font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img id="lamb" src="https://files.catbox.moe/fsextb.png" alt="Crazy Lamb">
+    <img id="chicken" src="https://files.catbox.moe/nk1gp9.png" alt="Crazy Chicken">
+    <img id="goat" src="https://files.catbox.moe/95kazb.png" alt="Goat">
+    <img id="cat" src="https://files.catbox.moe/lq0z0l.png" alt="Cat">
+    <img id="pig" src="https://files.catbox.moe/9g2eef.png" alt="Pig">
+    <img id="cow" src="https://files.catbox.moe/pirxj7.png" alt="Cow">
+    <img id="horse" src="https://files.catbox.moe/tj15ip.png" alt="Horse">
+    <div id="popup">
+        <div id="popup-text">Power Unlocked!</div>
+    </div>
+
+    <script>
+        // Get elements
+        const lamb = document.getElementById('lamb');
+        const chicken = document.getElementById('chicken');
+        const goat = document.getElementById('goat');
+        const cat = document.getElementById('cat');
+        const pig = document.getElementById('pig');
+        const cow = document.getElementById('cow');
+        const horse = document.getElementById('horse');
+        const popup = document.getElementById('popup');
+        
+        // Initial lamb sound and counters
+        let lambSound = new Audio('https://files.catbox.moe/ndwuaw.mp3');
+        let lambClickCount = 0;
+        let chickenClickCount = 0;
+        let goatClickCount = 0;
+        let catClickCount = 0;
+        let pigClickCount = 0;
+        let cowClickCount = 0;
+        let horseClickCount = 0;
+        let isSecondLamb = false;
+
+        // Sounds
+        const chickenSound = new Audio('https://files.catbox.moe/sywxgs.mp3');
+        const goatSound = new Audio('https://files.catbox.moe/2h4w72.mp3');
+        const catSound = new Audio('https://files.catbox.moe/7uhddg.mp3');
+        const pigSound = new Audio('https://files.catbox.moe/fzrgr8.mp3');
+        const cowSound = new Audio('https://files.catbox.moe/0h35ll.mp3');
+        const horseSound = new Audio('https://files.catbox.moe/2jhbgh.mp3');
+
+        // Lamb click event
+        lamb.addEventListener('click', () => {
+            lambClickCount++;
+            
+            lambSound.currentTime = 0;
+            lambSound.play();
+
+            if (!isSecondLamb && lambClickCount === 20) {
+                lamb.src = 'https://files.catbox.moe/r04k6y.png';
+                lambSound = new Audio('https://files.catbox.moe/rupn34.mp3');
+                isSecondLamb = true;
+                lambClickCount = 0;
+            }
+
+            if (isSecondLamb && lambClickCount === 20) {
+                chicken.style.display = 'block';
+            }
+        });
+
+        // Chicken click event
+        chicken.addEventListener('click', () => {
+            chickenClickCount++;
+            
+            chickenSound.currentTime = 0;
+            chickenSound.play().catch(error => console.log('Error playing chicken sound:', error));
+
+            if (chickenClickCount === 40) {
+                goat.style.display = 'block';
+            }
+        });
+
+        // Goat click event
+        goat.addEventListener('click', () => {
+            goatClickCount++;
+            
+            goatSound.currentTime = 0;
+            goatSound.play().catch(error => console.log('Error playing goat sound:', error));
+
+            if (goatClickCount === 70) {
+                cat.style.display = 'block';
+            }
+        });
+
+        // Cat click event
+        cat.addEventListener('click', () => {
+            catClickCount++;
+            
+            catSound.currentTime = 0;
+            catSound.play().catch(error => console.log('Error playing cat sound:', error));
+
+            if (catClickCount === 60) {
+                pig.style.display = 'block';
+            }
+        });
+
+        // Pig click event
+        pig.addEventListener('click', () => {
+            pigClickCount++;
+            
+            pigSound.currentTime = 0;
+            pigSound.play().catch(error => console.log('Error playing pig sound:', error));
+
+            if (pigClickCount === 90) {
+                cow.style.display = 'block';
+            }
+        });
+
+        // Cow click event
+        cow.addEventListener('click', () => {
+            cowClickCount++;
+            
+            cowSound.currentTime = 0;
+            cowSound.play().catch(error => console.log('Error playing cow sound:', error));
+
+            if (cowClickCount === 120) {
+                horse.style.display = 'block';
+            }
+        });
+
+        // Horse click event
+        horse.addEventListener('click', () => {
+            horseClickCount++;
+            
+            horseSound.currentTime = 0;
+            horseSound.play().catch(error => console.log('Error playing horse sound:', error));
+
+            if (horseClickCount === 30) {
+                popup.style.display = 'flex'; // Show the popup
+            }
+        });
+    </script>
+</body>
+</html>
